@@ -62,9 +62,47 @@ const getAssetHistory = (coin) => {
     
 }
 
+const getMarkets = (coin) => { 
+    const url = "https://api.coincap.io/v2";
+    return fetch(`${url}/assets/${coin}/markets?limit=5`, {
+        mode: "cors",
+        method: "GET",
+        headers: {
+        "Accept": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then((response) => {   
+        return response.data;
+    })
+    .catch(error => { console.log('request failed', error); });
+
+}
+
+const getExchange = (id) => { 
+    const url = "https://api.coincap.io/v2";
+
+    return fetch(`${url}/exchanges/${id}`, {
+        mode: "cors",
+        method: "GET",
+        headers: {
+        "Accept": "application/json"
+        }
+    })
+    .then(response => response.json())
+    .then((response) => {   
+        return response.data;
+    })
+    .catch(error => { console.log('request failed', error); });
+
+
+}
+
 
 export default { 
     getAssets,
     getAseet,
-    getAssetHistory
+    getAssetHistory,
+    getMarkets,
+    getExchange
 };

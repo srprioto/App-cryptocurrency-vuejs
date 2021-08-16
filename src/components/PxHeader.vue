@@ -1,21 +1,23 @@
 <template>
    <header class="shadow w-screen">
-        <nav>
-            <nav class="flex items-center justify-between flex-wrap bg-green-400 p-6">
-
-                <router-link 
+        <nav class="flex items-center justify-between flex-wrap bg-red-500 p-6">
+            <div class="flex items-center flex-shrink-0 text-white mr-6">
+                <px-icon class="mr-2" />
+                <router-link
                     :to="{ name: 'home' }"
-                    class="flex items-center flex-shrink-0 text-white mr-6"
-                >
-                    <PxIcon clas="mr-2"/>
-                    <span class="font-semibold text-xl tracking-tight">AppExchange</span>
-                </router-link>
-        
-                <div class="hidden sm:block w-full blok flex-grow lg:flex lg:items-center lg:wauto">
-                    <div class="text-sm lg:flex-grow"></div>
+                    class="font-semibold text-xl tracking-tight"
+                >App Exchange</router-link>
+            </div>
+            <div class="hidden sm:block w-full block flex-grow lg:flex lg:items-center lg:w-auto">
+                <div class="text-sm lg:flex-grow">
+                    <router-link
+                        v-for="l in links"
+                        :key="l.title"
+                        :to="l.to"
+                        class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                    >{{ l.title }}</router-link>
                 </div>
-
-            </nav>
+            </div>
         </nav>
     </header> 
 </template>
@@ -27,6 +29,12 @@
         name: "PxHeader",
         components: {
             PxIcon
+        },
+        props:{
+            links: {
+                type: Array,
+                default: () => []
+            }
         },
         data(){
             return{

@@ -1,25 +1,33 @@
 <template>
-    <PxAssetsTable v-bind:assets="assets" />
+    <PxLoad v-if="loading"></PxLoad>
+    <PxAssetsTable v-if="!loading" v-bind:assets="assets" />
 </template>
 
 <script>
-    import api from '@/api'
+    import api from '@/api' 
     import PxAssetsTable from '@/components/PxAssetsTable.vue';
+    import PxLoad from '@/components/PxLoad.vue';
 
     export default {
         name: "Home",
         components: {
-            PxAssetsTable
+            PxAssetsTable,
+            PxLoad
         },
         data() {
             return {
                 url: "https://api.coincap.io/v2/assets?limit=20",
-                assets: []
+                assets: [],
+                loading: true,
             }
         },
         created() {
+
+            this.loading = true;
+
             api.getAssets(this.url)
             .then(assets => (this.assets = assets))
+            .finally(() => this.loading = false);
             
         },
     }

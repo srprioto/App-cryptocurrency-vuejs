@@ -2,17 +2,30 @@
     <table class="table-coins">
         <tr class="title-table-coins bg-gray-100 border-b-2 border-gray-400">
             <th>..</th>
-            <th>
-                <span>Ranking</span>
+            <th :class="{ up: this.sortOrder === 1, down: this.sortOrder === -1 }">
+                <span 
+                    v-on:click="changeSortOrder"
+                    class="underline cursor-pointer"
+                >
+                    Ranking
+                </span>
             </th>
             <th>Nombre</th>
             <th>Precio</th>
             <th>Cap. de Mercado</th>
             <th>Variación 24hs</th>
-            <td class="hidden sm:block"></td>
+            <td class="hidden sm:block">
+                <input
+                    class="bg-gray-100 focus:outline-none border-b border-gray-400 py-2 px-4 block w-full appearance-none leading-normal"
+                    id="filter"
+                    placeholder="Buscar..."
+                    type="text"
+                    v-model="filter"
+                />
+            </td>
         </tr>
         <tr 
-            v-for="a in assets"
+            v-for="a in filteredAssets"
             v-bind:key="a.id"
             class="border-b border-gray-200 hover:bg-gray-100 hover:bg-orange-100"               
         >
@@ -25,7 +38,7 @@
             <td><b># {{ a.rank }}</b></td>
             <td>
                 <router-link 
-                    class="hover:underline text-green-600"
+                    class="hover:underline text-red-600"
                     :to="{ name: 'coin-details', params: { id: a.id }}"
                 ><b>{{ a.name }}</b>
                 </router-link>
@@ -56,11 +69,38 @@
         components: {
             PxButton
         },
+        data() {
+            return {
+                filter: '',
+                sortOrder: 1
+            }
+        },
         props:{
             assets: {
                 type: Array,
                 default: () => []
             },
+        },
+        computed:{
+            filteredAssets(){
+
+                const altOrder = this.sortOrder === 1 ? -1 : 1
+
+                return this.assets.filter(a => (
+                    a.symbol.toLowerCase().includes(this.filter.toLowerCase()) ||
+                    a.name.toLowerCase().includes(this.filter.toLowerCase())
+                ))
+                .sort((a, b) => {
+                    if (parseInt(a.rank) > parseInt(b.rank)) {
+                        return this.sortOrder
+                    }
+
+                    return altOrder;
+                })
+
+            },
+
+            
         },
         methods: {
 
@@ -74,6 +114,9 @@
             },
             goToCoin(id){
                 this.$router.push({ name: 'coin-details', params: { id: id }})
+            },
+            changeSortOrder(){
+                this.sortOrder = this.sortOrder === 1 ? -1 : 1
             }
         },
 
@@ -85,7 +128,9 @@
 <style scoped>
 
     .table-coins {
-        display: block!important;
+        display: table!important;
+        margin: 50px auto 0 auto;
+
     }
 
     .title-table-coins{
