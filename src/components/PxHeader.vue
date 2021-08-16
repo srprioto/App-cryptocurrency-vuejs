@@ -1,0 +1,42 @@
+<template>
+   <header class="shadow w-screen">
+        <nav>
+            <nav class="flex items-center justify-between flex-wrap bg-green-400 p-6">
+
+                <router-link 
+                    :to="{ name: 'home' }"
+                    class="flex items-center flex-shrink-0 text-white mr-6"
+                >
+                    <PxIcon clas="mr-2"/>
+                    <span class="font-semibold text-xl tracking-tight">AppExchange</span>
+                </router-link>
+        
+                <div class="hidden sm:block w-full blok flex-grow lg:flex lg:items-center lg:wauto">
+                    <div class="text-sm lg:flex-grow"></div>
+                </div>
+
+            </nav>
+        </nav>
+    </header> 
+</template>
+
+<script>
+    import PxIcon from './PxIcon.vue';
+
+    export default {
+        name: "PxHeader",
+        components: {
+            PxIcon
+        },
+        data(){
+            return{
+                
+            }
+        }
+    }
+    
+</script>
+
+<style>
+
+</style>
